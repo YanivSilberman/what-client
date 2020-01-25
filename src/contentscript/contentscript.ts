@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const endpoint = 'https://what-api.ngrok.io';
+const endpoint = process.env.API_URL;
 
 const isThisContentscript = true;
 

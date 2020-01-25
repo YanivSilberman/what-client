@@ -1,7 +1,9 @@
 const { CheckerPlugin } = require('awesome-typescript-loader');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const { optimize } = require('webpack');
+const { DefinePlugin, optimize } = require('webpack');
 const { join } = require('path');
+const dotenv = require('dotenv');
+
 let prodPlugins = [];
 
 if (process.env.NODE_ENV === 'production') {
@@ -42,6 +44,9 @@ module.exports = {
       filename: '[name].css',
       chunkFilename: '[id].css',
     }),
+    new DefinePlugin({
+      'process.env': JSON.stringify(dotenv.config().parsed),
+    })
   ],
   resolve: {
     extensions: ['.ts', '.js'],
