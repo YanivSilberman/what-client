@@ -1,6 +1,9 @@
-import axios from 'axios';
-import * as $ from 'jquery';
 import './contentscript.scss';
+
+import axios from 'axios';
+import * as JQuery from 'jquery';
+
+const $ = <any>JQuery;
 
 const isThisContentscript = true;
 
