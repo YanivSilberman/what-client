@@ -15,6 +15,7 @@
   "content_scripts": [
     {
       "js": ["contentscript.js"],
+      "css": ["contentscript.css"],
       "matches": ["<all_urls>"]
     }
   ],
