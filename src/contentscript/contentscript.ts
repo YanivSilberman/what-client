@@ -30,7 +30,13 @@ function replaceElement(from: string, to: string) {
   el.html(replacement);
 }
 
-// 
+
+const difficulties = [
+  'easy',
+  'intermediate',
+  'hard'
+];
+
 const content = [
   'span', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'
 ].map(i => getTextForElement(i)).join(". ");
@@ -40,18 +46,18 @@ const trimmer = str => str.substring(0, str.length - 1);
 
 chrome.storage.local.get(['user'], function({ user }) {
   if (user && user.active === false) return;
-  const suffix = user && user.word ? 'word' : 'sentence';
+  const isSentence = user && user.dif === 4;
+  const suffix = isSentence ? 'sentence' : 'word';
 
   axios
     .post(process.env.API_URL + suffix, {
       text: content,
-      freq: 0.5,
-      dif: 0.5,
-      noun: false,
-      verb: true,
-      adverb: false,
-      adjective: true,
-      ...user
+      freq: user.freq || 0.5,
+      noun: user.noun || true,
+      verb: user.verb || true,
+      adverb: user.adverb || true,
+      adjective: user.adjective || true,
+      ...(!isSentence ? { dif: user.dif || 'easy' } : {}),
     })
     .then(({ data }) => {
       const trimmedData = data.map(i => [ trimmer(i[0]), trimmer(i[1]) ]);

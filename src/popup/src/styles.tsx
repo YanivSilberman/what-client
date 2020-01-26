@@ -1,52 +1,70 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  height: 400px;
-  width: 350px;
+  height: auto;
+  width: 377px;
   overflow-y: scroll;
-  background: #FCFCFC;
-  font-family: Arial, Helvetica, sans-serif;
+  background: transparent;
+  transition: all 1s;
+  font-family: Helvetica, sans-serif;
 `;
 
 export const Header = styled.header`
   background: #fff;
-  box-shadow: 0 3px 3px -2px rgba(0,0,0,.2), 0 3px 4px 0 rgba(0,0,0,.14), 0 1px 8px 0 rgba(0,0,0,.12);
-  height: 100px;
+  border-bottom: 1px solid #CCEFFF;
+  height: 95px;
 
   > div {
     display: flex;
     align-items: center;
-    width: 90%;
+    height: 100%;
+    width: calc(100% - 46px);
     margin: auto;
-
+    
     > img {
-      height: 60px;
-      width: 60px;
+      height: 38px;
+      width: 38px;
     }
   
     > p {
       margin-left: 10px;
       color: #023C48;
-      font-size: 22px; 
+      flex: 1;
+      font-size: 16px;
       font-weight: bold;
       word-wrap: break-word;
-      flex: 1;
-      font-family: Helvetica, sans-serif;
+
+      > h4 {
+        margin: 0;
+      }
     }
   }
 `;
 
 export const Section = styled.div`
-  height: 100px;
+  height: 69px;
+  background: #ebf9ff;
   > div {
-    width: 90%;
+    width: calc(100% - 46px);
     margin: auto;
+    display: flex;
+    align-items: center;
+
+    > div {
+      flex: 1;
+    }
+
+    > div:nth-child(2) {
+      padding-right: 5px;
+      padding-left: 30px;
+    }
   }
 `;
 
 export const FlexSection = styled.div`
+  height: 50px;
   > div {
-    width: 90%;
+    width: calc(100% - 46px);
     margin: auto;
     display: flex;
     align-items: center;
@@ -62,19 +80,23 @@ export const FlexSection = styled.div`
   }
 `;
 
-export const Title = styled.h3`
-  color: #808080;
-  margin-bottom: 5px;
-  font-size: 20px;
+export const Title = styled.h3<{ options?: boolean }>`
+  color: #35b9e6;
+  margin-bottom: 2px;
+  font-size: 16px;
+  line-height: 16px;
+  font-weight: ${({ options }) => options ? '400' : '700'};
 `;
 
-export const Subtitle = styled.p`
-  color: #bdbdbd;
+export const Subtitle = styled.p<{ options?: boolean }>`
+  color: ${({ options }) => options ? '#acacac' : '#35b9e6'};
+  margin-top: 0px;
+  font-size: 13px;
 `;
 
 export const ShowMoreSection = styled.div<{ showMore: boolean; }>`
   background: #fff;
-  box-shadow: 0 -3px 3px -2px rgba(0,0,0,.2), 0 -3px 4px 0 rgba(0,0,0,.14), 0 -1px 8px 0 rgba(0,0,0,.12);
+  border-top: 1px solid #CCEFFF;
   transition: all 0.5;
   min-height: 50px;
   overflow: hidden;
@@ -93,7 +115,6 @@ export const ShowMoreSection = styled.div<{ showMore: boolean; }>`
       margin: 20px;
       font-size: 14px;
       text-align: center;
-      margin: auto;
       width: auto;
       cursor: pointer;
       color: #35b9e6;

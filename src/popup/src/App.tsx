@@ -17,12 +17,28 @@ interface User {
   adjective: boolean;
   verb: boolean;
   adverb: boolean;
-  word: boolean;
+}
+
+const b = {
+  "50":"#e3f2fd",
+  "100":"#bbdefb",
+  "200":"#90caf9",
+  "300":"#64b5f6",
+  "400":"#35b9e6",
+  "500":"#35b9e6",
+  "600":"#35b9e6",
+  "700":"#35b9e6",
+  "800":"#35b9e6",
+  "900":"#35b9e6",
+  "A100":"#35b9e6",
+  "A200":"#35b9e6",
+  "A400":"#35b9e6",
+  "A700":"#35b9e6"
 }
 
 const theme = createMuiTheme({
   palette: {
-    primary: blue
+    primary: b
   }
 } as any);
 
@@ -32,12 +48,11 @@ const App: React.FC = () => {
   const [ user, setUser ] = useState<User>({
     active:true,
     freq:10,
-    dif: 10, 
+    dif: 1, 
     noun: true,
     adjective:true,
     verb:true,
-    adverb:true, 
-    word:false
+    adverb:true
   });
 
   const handleChange = (change: Partial<typeof user>) => {
@@ -55,7 +70,7 @@ const App: React.FC = () => {
 
   // put all of the variables into storage
   useEffect(() => {
-    chrome.storage.local.set({"user":user});
+    chrome.storage.local.set({"user": user});
   }, [ user ]);
   
   const {
@@ -65,9 +80,17 @@ const App: React.FC = () => {
     noun,
     adjective,
     verb,
-    adverb,
-    word
+    adverb
   } = user;
+
+  const diffMessage = [
+    'Easy vocabulary',
+    'Intermediate vocabulary',
+    'Hard vocabulary',
+    'Full sentences'
+  ][dif - 1];
+
+  const extendedShowMore = showMore && dif !== 4;
 
   return (
     <ThemeProvider theme={theme}>
@@ -75,7 +98,10 @@ const App: React.FC = () => {
         <Header>
           <div>
             <img src={what_logo} />
-            <p>Learn French while you surf!</p>
+            <p>
+              <h4>Learn french</h4>
+              <h4>while you surf</h4>
+            </p>
             <Switch
               onColor="#35b9e6"
               className="switch"
@@ -88,52 +114,57 @@ const App: React.FC = () => {
         <Section> 
           <div>
             <div> 
-              <Title>Frequency</Title>
-              <Subtitle>How often you'd like to see translations</Subtitle>
+              <Title>Difficulty</Title>
+              <Subtitle>{diffMessage}</Subtitle>
             </div>
-            <Slider
-              value={freq}
-              onChange={(e, change) => handleChange({ freq: change as number })}
-              aria-labelledby="continuous-slider"
-              valueLabelDisplay="auto"
-              min={0}
-              max={100}
-
-            />
+            <div>
+              <Slider
+                value={dif}
+                aria-labelledby="continuous-slider"
+                valueLabelDisplay="auto"
+                min={1}
+                max={4}
+                onChange={(e, val) => handleChange({ dif: val as number })}
+                disabled={ !active }
+              />
+            </div>
           </div>
         </Section>
 
         <Section> 
           <div>
             <div> 
-              <Title>Difficulty</Title>
-              <Subtitle>How comfortable with French are you? </Subtitle>
+              <Title>Density</Title>
+              <Subtitle>Frequency of translations</Subtitle>
             </div>
-            <Slider
-              value={dif}
-              aria-labelledby="continuous-slider"
-              valueLabelDisplay="auto"
-              min={0}
-              max={100}
-              onChange={(e, val) => handleChange({ dif: val as number })}
-            />
+            <div>
+              <Slider
+                value={freq}
+                onChange={(e, change) => handleChange({ freq: change as number })}
+                aria-labelledby="continuous-slider"
+                valueLabelDisplay="auto"
+                min={10}
+                max={70}
+                disabled={ !active }
+              />
+            </div>
           </div>
-
         </Section>
 
-        <ShowMoreSection showMore={ showMore }>
+        <ShowMoreSection showMore={ extendedShowMore }>
           <div className="content">
             <FlexSection> 
               <div>
                 <div> 
-                  <Title>Nouns</Title>
-                  <Subtitle>People, places, or things</Subtitle>
+                  <Title options>Nouns</Title>
+                  <Subtitle options>Enrich your vocabulary</Subtitle>
                 </div>
                 <div className="round">
                   <Checkbox 
                     color="primary"
                     checked={ noun }
                     onChange={ e => handleChange({ noun: e.target.checked }) }
+                    disabled={ !active }
                   />
                 </div>
               </div>
@@ -142,14 +173,15 @@ const App: React.FC = () => {
             <FlexSection> 
               <div>
                 <div> 
-                  <Title>Adjectives</Title>
-                  <Subtitle>Phrase naming an attribute, added to a noun</Subtitle>
+                  <Title options>Adjectives</Title>
+                  <Subtitle options>Improve sentence formulation</Subtitle>
                 </div>
                 <div className="round">
                   <Checkbox 
                     color="primary"
                     checked={ adjective }
                     onChange={ e => handleChange({ adjective: e.target.checked }) }
+                    disabled={ !active }
                   />
                 </div>
               </div>
@@ -158,14 +190,15 @@ const App: React.FC = () => {
             <FlexSection> 
               <div>
                 <div>
-                  <Title>Verbs</Title>
-                  <Subtitle>Action, state, or occurrence</Subtitle>
+                  <Title options>Verbs</Title>
+                  <Subtitle options>Practice your conjugations</Subtitle>
                 </div>
                 <div className="round">
                   <Checkbox 
                     color="primary"
                     checked={ verb }
                     onChange={ e => handleChange({ verb: e.target.checked }) }
+                    disabled={ !active }
                   />
                 </div>
               </div>
@@ -174,40 +207,32 @@ const App: React.FC = () => {
             <FlexSection> 
               <div>
                 <div> 
-                  <Title>Adverbs</Title>
-                  <Subtitle>Expressing a relation of place, time, circumstance, manner, cause, degree</Subtitle>
+                  <Title options>Adverbs</Title>
+                  <Subtitle options>Perfection is in the detail</Subtitle>
                 </div>
                 <div className="round">
                   <Checkbox 
                     color="primary"
                     checked={ adverb }
                     onChange={ e => handleChange({ adverb: e.target.checked }) }
+                    disabled={ !active }
                   />
                 </div>
               </div>       
             </FlexSection>
           </div>
-          <div className="link">
-            <a onClick={() => setShowMore(!showMore)}>
-              Show { showMore ? 'less' : 'more' }
-            </a>
-          </div>
+          { dif !== 4 && (
+            <div className="link">
+              <a href="#" onClick={() => setShowMore(!showMore)}>
+                Show { showMore ? 'less' : 'more' }
+              </a>
+            </div>
+          ) }
         </ShowMoreSection>
       </Container>
     </ThemeProvider>
   );
 }
-
-/**
- * <div>
-          <p className="setting">Selection Logic</p>
-          <label>Word/Sentence</label><input type="checkbox" value="word" onChange={() => 
-          {
-            handleChange({ word: !word }); 
-          }}/> 
-        </div>
- * 
- */
 
 export default App;
 
