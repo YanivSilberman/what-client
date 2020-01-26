@@ -2,6 +2,8 @@
   height: 400px;
   width: 350px;
   overflow:scroll;
+  background: #FCFCFC;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .header {
@@ -24,7 +26,6 @@
   word-wrap: break-word;
   width: 180px;
   margin-left: 5px;
-
 }
 
 .switch {
@@ -37,10 +38,7 @@
   margin-top: 10px;
   border-bottom: 1px solid #d1d1d1;
   border-top: 1px solid #d1d1d1;
-  padding-left : 10px;
   line-height: 8px;
-  background-color: #FCFCFC;
-  padding-right: 10px;
 }
 
 .second-slider {
@@ -51,19 +49,20 @@
   padding-left : 10px;
   line-height: 8px;
   background-color: #FCFCFC;
-  padding-right: 10px;
-
-  
+  padding-right: 10px; 
 }
 
 .drop-section {
   border-bottom: 1px solid #d1d1d1;
-  padding-left : 10px;
   line-height: 8px;
-  display:flex;
+  display: flex;
   align-items: center;
   background-color: #FCFCFC;
+  max-width: 100%;
+}
 
+.drop-section > div:first-child {
+  flex: 1;
 }
 
 .setting {
@@ -71,6 +70,11 @@
   font-weight: 400;
   color:grey;
 }
+
+.round {
+  width: 30px;
+}
+
 .setting-desc {
   font-size: 14px;
   font-weight: 200;
@@ -115,14 +119,4 @@ button {
   margin-left: 30px;
   border: 1px solid grey;
 }
-
-.round {
-  width:12%;
-  margin-bottom: 7px;
-
-}
-
-
-
-
 

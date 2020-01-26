@@ -38,17 +38,20 @@ const content = [
 // remove periods from end
 const trimmer = str => str.substring(0, str.length - 1);
 
-chrome.storage.sync.get('user', function(user) {
+chrome.storage.local.get(['user'], function({ user }) {
   if (user && user.active === false) return;
+  const suffix = user && user.word ? 'word' : 'sentence';
+
   axios
-    .post(process.env.API_URL + 'word', {
+    .post(process.env.API_URL + suffix, {
       text: content,
       freq: 0.5,
       dif: 0.5,
       noun: false,
       verb: true,
       adverb: false,
-      adjective: true
+      adjective: true,
+      ...user
     })
     .then(({ data }) => {
       const trimmedData = data.map(i => [ trimmer(i[0]), trimmer(i[1]) ]);
