@@ -71,30 +71,52 @@ chrome.storage.local.get(['user'], function({ user }) {
         return acc;
       }, {});
 
+
       $('body :not(script) :not(style)').contents().filter(function() {
         return this.nodeType === 3;
       }).replaceWith(function() {
-        const rp = suffix === 'sentence' ? obj[this.nodeValue] :
-          (() => {
-            const f = trimmedData.find(i => this.nodeValue.indexOf(i[0]) > -1);
-            return f ? f[1] : false;
-          })()
-        
-        if (rp) {
-
-          const html = `
-            <span class="what-selection">
-              ${rp}
-              <span>${this.nodeValue}</span>
-            </span>
-          `;
-          const rep = suffix === 'sentence' ? this.nodeValue :
-            trimmedData.find(i => i[1] === rp)[0];
-          const re = new RegExp(rep);
-
-          return this.nodeValue.replace(re, html);
+        if (suffix === 'sentence') {
+          const rp = obj[this.nodeValue];
+          if (rp) {
+            const html = `
+              <a class="what-selection">
+                ${rp}
+                <span>${this.nodeValue}</span>
+              </a>
+            `;
+            
+            const re = new RegExp(this.nodeValue, 'g');
+            return this.nodeValue.replace(re, html);
+          } else {
+            return this.nodeValue;
+          }
         } else {
-          return this.nodeValue;
+          const rp = (() => {
+            const fs = trimmedData.filter(i => {
+              const search = new RegExp(`\\b(${i[0]})\\b`, 'g');
+              const found = this.nodeValue.match(search);
+              return found !== null;
+            });
+            return fs ? fs : false;
+          })();
+          
+          if (rp) {
+            for (let r of rp) {
+              // console.log('r', r);
+              // const rep = trimmedData.find(i => i[1] === rp)[0];
+              const html = `
+                <span class="what-selection">
+                  ${r[1]}
+                  <span>${r[0]}</span>
+                </span>
+              `;
+              const re = new RegExp(r[0], 'g');
+              return this.nodeValue.replace(re, html);
+            }
+          } else {
+            return this.nodeValue;
+          }
+
         }
       })
 
