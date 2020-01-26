@@ -45,22 +45,27 @@ const content = [
 const trimmer = str => str.substring(0, str.length - 1);
 
 chrome.storage.local.get(['user'], function({ user }) {
-  if (user && user.active === false) return;
+  const isNew = $.isEmptyObject(user);
+
+  if (!isNew && user.active === false) return;
   const isSentence = user && user.dif === 4;
   const suffix = isSentence ? 'sentence' : 'word';
 
+  const params = {
+    text: content,
+    freq: user.freq ? user.freq * 0.01 : 0.5,
+    noun: isNew ? true : user.noun,
+    verb: isNew ? true : user.verb,
+    adverb: isNew ? true : user.adverb,
+    adjective: isNew ? true : user.adjective,
+    ...(!isSentence ? { dif: user.dif ? difficulties[user.dif - 1] : 'easy' } : {}),
+  };
+
   axios
-    .post(process.env.API_URL + suffix, {
-      text: content,
-      freq: user.freq || 0.5,
-      noun: user.noun || true,
-      verb: user.verb || true,
-      adverb: user.adverb || true,
-      adjective: user.adjective || true,
-      ...(!isSentence ? { dif: user.dif || 'easy' } : {}),
-    })
+    .post(process.env.API_URL + suffix, params)
     .then(({ data }) => {
-      const trimmedData = data.map(i => [ trimmer(i[0]), trimmer(i[1]) ]);
+      const trimmedData = suffix === 'word' ? data :
+        data.map(i => [ trimmer(i[0]), trimmer(i[1]) ]);
 
       for (let i of trimmedData) {
         try {
