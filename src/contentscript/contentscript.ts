@@ -5,10 +5,6 @@ import * as JQuery from 'jquery';
 
 const $ = <any>JQuery;
 
-const state = {
-  data: []
-};
-
 // parse all text nodes for element
 function getTextForElement(el: string) {
   let content = '';
@@ -42,15 +38,20 @@ const content = [
 // remove periods from end
 const trimmer = str => str.substring(0, str.length - 1);
 
-chrome.storage.sync.get('user', function(data) {
-  console.log('user', data);
+chrome.storage.sync.get('user', function(user) {
+  if (user && user.active === false) return;
   axios
-    .post(process.env.API_URL + 'sentence', {
-      text: content
+    .post(process.env.API_URL + 'word', {
+      text: content,
+      freq: 0.5,
+      dif: 0.5,
+      noun: false,
+      verb: true,
+      adverb: false,
+      adjective: true
     })
     .then(({ data }) => {
       const trimmedData = data.map(i => [ trimmer(i[0]), trimmer(i[1]) ]);
-      state.data = trimmedData;
 
       for (let i of trimmedData) {
         try {
@@ -115,26 +116,32 @@ function handleUnhover() {
 
 // Handle selection
 function handleSelected(event) {
-  let selection = document.getSelection ? document.getSelection() : document.selection.createRange();
-  
-  if (selection) {
-    const text = selection.toString();
-    const isFrench = selection.anchorNode.parentNode.className === "what-selection";
+  const doc = document as any;
+  let selection = doc.getSelection ?
+    doc.getSelection() : doc.selection.createRange();
 
-    if (text) {
-      axios
-        .post(process.env.API_URL + 'word_lookup', {
-          text,
-          lang: isFrench ? 'fr' : 'en'
-        })
-        .then(({ data }) => {
-          hidePopover();
-          injectPopover(data);
-          showPopover(event);
-        })
-        .catch(err => console.log({ err }));
-    } else {
-      hidePopover();
+  if (selection) {
+    try {
+      const text = selection.toString();
+      const isFrench = selection.anchorNode.parentNode.className === "what-selection";
+  
+      if (text) {
+        axios
+          .post(process.env.API_URL + 'word_lookup', {
+            text,
+            lang: isFrench ? 'fr' : 'en'
+          })
+          .then(({ data }) => {
+            hidePopover();
+            injectPopover(data);
+            showPopover(event);
+          })
+          .catch(err => console.log({ err }));
+      } else {
+        hidePopover();
+      }
+    } catch (err) {
+      console.log('selected error', err);
     }
   }
 };

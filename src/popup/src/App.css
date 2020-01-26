@@ -1,38 +1,128 @@
-.App {
-  text-align: center;
+.container {
+  height: 400px;
+  width: 350px;
+  overflow:scroll;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+.header {
+  display:flex;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.logo {
+  height: 60px;
+  width: 60px;
+
+  margin-left: 15px;
+
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.desc {
+  color: #023C48;
+  font-size: 22px; 
+  font-weight: bold;
+  word-wrap: break-word;
+  width: 180px;
+  margin-left: 5px;
+
 }
+
+.switch {
+  margin-left: 12px;
+  margin-bottom: 8px;
+  size: 50%;
+}
+
+.section {
+  margin-top: 10px;
+  border-bottom: 1px solid #d1d1d1;
+  border-top: 1px solid #d1d1d1;
+  padding-left : 10px;
+  line-height: 8px;
+  background-color: #FCFCFC;
+  padding-right: 10px;
+}
+
+.second-slider {
+  border-top: 1px solid #d1d1d1;
+
+  border-bottom: 1px solid #d1d1d1;
+  border-top: 1px solid #d1d1d1;
+  padding-left : 10px;
+  line-height: 8px;
+  background-color: #FCFCFC;
+  padding-right: 10px;
+
+  
+}
+
+.drop-section {
+  border-bottom: 1px solid #d1d1d1;
+  padding-left : 10px;
+  line-height: 8px;
+  display:flex;
+  align-items: center;
+  background-color: #FCFCFC;
+
+}
+
+.setting {
+  font-size: 20px;
+  font-weight: 400;
+  color:grey;
+}
+.setting-desc {
+  font-size: 14px;
+  font-weight: 200;
+
+
+}
+
+.divider {
+
+  font-weight: 200;
+  padding: 10px;
+  background-color: #FCFCFC;
+  margin-top: 10px;
+  border-bottom: 1px solid #d1d1d1;
+
+}
+
+.anim {
+  background-position: center;
+  transition: background 0.8s;
+}
+.anim:hover {
+  background: #47a7f5 radial-gradient(circle, transparent -1%, #47a7f5 -1%) center/15000%;
+}
+.anim:active {
+  background-size: 100%;
+  color:grey;
+  transition: background 0s;
+}
+
+/* Button style */
+button {
+  border: none;
+  cursor: pointer;
+  outline: none;
+
+  width: 100%;
+	padding-bottom: 100%;
+  border-radius: 50%;
+  overflow:hidden;
+  background:grey;
+  margin-left: 30px;
+  border: 1px solid grey;
+}
+
+.round {
+  width:12%;
+  margin-bottom: 7px;
+
+}
+
+
+
+
+
