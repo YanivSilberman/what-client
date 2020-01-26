@@ -3,7 +3,7 @@ import Switch from "react-switch";
 import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import Slider from '@material-ui/core/Slider';
 import Checkbox from '@material-ui/core/Checkbox';
-import blue from '@material-ui/core/colors/blue';
+import Frame, { FrameContextConsumer } from 'react-frame-component';
 
 import { Container, Header, Section, Title, Subtitle, FlexSection,
   ShowMoreSection, } from './styles';
@@ -94,143 +94,143 @@ const App: React.FC = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Container>
-        <Header>
-          <div>
-            <img src={what_logo} />
-            <p>
-              <h4>Learn french</h4>
-              <h4>while you surf</h4>
-            </p>
-            <Switch
-              onColor="#35b9e6"
-              className="switch"
-              onChange={ val => handleChange({ active: val }) }
-              checked={active}
-            />
-          </div>
-        </Header>
-
-        <Section> 
-          <div>
-            <div> 
-              <Title>Difficulty</Title>
-              <Subtitle>{diffMessage}</Subtitle>
-            </div>
-            <div>
-              <Slider
-                value={dif}
-                aria-labelledby="continuous-slider"
-                valueLabelDisplay="auto"
-                min={1}
-                max={4}
-                onChange={(e, val) => handleChange({ dif: val as number })}
-                disabled={ !active }
-              />
-            </div>
-          </div>
-        </Section>
-
-        <Section> 
-          <div>
-            <div> 
-              <Title>Density</Title>
-              <Subtitle>Frequency of translations</Subtitle>
-            </div>
-            <div>
-              <Slider
-                value={freq}
-                onChange={(e, change) => handleChange({ freq: change as number })}
-                aria-labelledby="continuous-slider"
-                valueLabelDisplay="auto"
-                min={10}
-                max={70}
-                disabled={ !active }
-              />
-            </div>
-          </div>
-        </Section>
-
-        <ShowMoreSection showMore={ extendedShowMore }>
-          <div className="content">
-            <FlexSection> 
-              <div>
-                <div> 
-                  <Title options>Nouns</Title>
-                  <Subtitle options>Enrich your vocabulary</Subtitle>
-                </div>
-                <div className="round">
-                  <Checkbox 
-                    color="primary"
-                    checked={ noun }
-                    onChange={ e => handleChange({ noun: e.target.checked }) }
-                    disabled={ !active }
-                  />
-                </div>
-              </div>
-            </FlexSection>
-
-            <FlexSection> 
-              <div>
-                <div> 
-                  <Title options>Adjectives</Title>
-                  <Subtitle options>Improve sentence formulation</Subtitle>
-                </div>
-                <div className="round">
-                  <Checkbox 
-                    color="primary"
-                    checked={ adjective }
-                    onChange={ e => handleChange({ adjective: e.target.checked }) }
-                    disabled={ !active }
-                  />
-                </div>
-              </div>
-            </FlexSection>
-
-            <FlexSection> 
-              <div>
+            <Container>
+              <Header>
                 <div>
-                  <Title options>Verbs</Title>
-                  <Subtitle options>Practice your conjugations</Subtitle>
-                </div>
-                <div className="round">
-                  <Checkbox 
-                    color="primary"
-                    checked={ verb }
-                    onChange={ e => handleChange({ verb: e.target.checked }) }
-                    disabled={ !active }
+                  <img src={what_logo} />
+                  <p>
+                    <h4>Learn french</h4>
+                    <h4>while you surf</h4>
+                  </p>
+                  <Switch
+                    onColor="#35b9e6"
+                    className="switch"
+                    onChange={ val => handleChange({ active: val }) }
+                    checked={active}
                   />
                 </div>
-              </div>
-            </FlexSection>
+              </Header>
 
-            <FlexSection> 
-              <div>
-                <div> 
-                  <Title options>Adverbs</Title>
-                  <Subtitle options>Perfection is in the detail</Subtitle>
+              <Section> 
+                <div>
+                  <div> 
+                    <Title>Difficulty</Title>
+                    <Subtitle>{diffMessage}</Subtitle>
+                  </div>
+                  <div>
+                    <Slider
+                      value={dif}
+                      aria-labelledby="continuous-slider"
+                      valueLabelDisplay="auto"
+                      min={1}
+                      max={4}
+                      onChange={(e, val) => handleChange({ dif: val as number })}
+                      disabled={ !active }
+                    />
+                  </div>
                 </div>
-                <div className="round">
-                  <Checkbox 
-                    color="primary"
-                    checked={ adverb }
-                    onChange={ e => handleChange({ adverb: e.target.checked }) }
-                    disabled={ !active }
-                  />
+              </Section>
+
+              <Section> 
+                <div>
+                  <div> 
+                    <Title>Density</Title>
+                    <Subtitle>Frequency of translations</Subtitle>
+                  </div>
+                  <div>
+                    <Slider
+                      value={freq}
+                      onChange={(e, change) => handleChange({ freq: change as number })}
+                      aria-labelledby="continuous-slider"
+                      valueLabelDisplay="auto"
+                      min={10}
+                      max={70}
+                      disabled={ !active }
+                    />
+                  </div>
                 </div>
-              </div>       
-            </FlexSection>
-          </div>
-          { dif !== 4 && (
-            <div className="link">
-              <a href="#" onClick={() => setShowMore(!showMore)}>
-                Show { showMore ? 'less' : 'more' }
-              </a>
-            </div>
-          ) }
-        </ShowMoreSection>
-      </Container>
-    </ThemeProvider>
+              </Section>
+
+              <ShowMoreSection showMore={ extendedShowMore }>
+                <div className="content">
+                  <FlexSection> 
+                    <div>
+                      <div> 
+                        <Title options>Nouns</Title>
+                        <Subtitle options>Enrich your vocabulary</Subtitle>
+                      </div>
+                      <div className="round">
+                        <Checkbox 
+                          color="primary"
+                          checked={ noun }
+                          onChange={ e => handleChange({ noun: e.target.checked }) }
+                          disabled={ !active }
+                        />
+                      </div>
+                    </div>
+                  </FlexSection>
+
+                  <FlexSection> 
+                    <div>
+                      <div> 
+                        <Title options>Adjectives</Title>
+                        <Subtitle options>Improve sentence formulation</Subtitle>
+                      </div>
+                      <div className="round">
+                        <Checkbox 
+                          color="primary"
+                          checked={ adjective }
+                          onChange={ e => handleChange({ adjective: e.target.checked }) }
+                          disabled={ !active }
+                        />
+                      </div>
+                    </div>
+                  </FlexSection>
+
+                  <FlexSection> 
+                    <div>
+                      <div>
+                        <Title options>Verbs</Title>
+                        <Subtitle options>Practice your conjugations</Subtitle>
+                      </div>
+                      <div className="round">
+                        <Checkbox 
+                          color="primary"
+                          checked={ verb }
+                          onChange={ e => handleChange({ verb: e.target.checked }) }
+                          disabled={ !active }
+                        />
+                      </div>
+                    </div>
+                  </FlexSection>
+
+                  <FlexSection> 
+                    <div>
+                      <div> 
+                        <Title options>Adverbs</Title>
+                        <Subtitle options>Perfection is in the detail</Subtitle>
+                      </div>
+                      <div className="round">
+                        <Checkbox 
+                          color="primary"
+                          checked={ adverb }
+                          onChange={ e => handleChange({ adverb: e.target.checked }) }
+                          disabled={ !active }
+                        />
+                      </div>
+                    </div>       
+                  </FlexSection>
+                </div>
+                { dif !== 4 && (
+                  <div className="link">
+                    <a href="#" onClick={() => setShowMore(!showMore)}>
+                      Show { showMore ? 'less' : 'more' }
+                    </a>
+                  </div>
+                ) }
+              </ShowMoreSection>
+            </Container>
+          </ThemeProvider>
   );
 }
 

@@ -22,14 +22,13 @@ function replaceElement(from: string, to: string) {
   const el = $(`:contains('${from}')`);
   const replacement = el.html()
     .replace(from, `
-      <a class="what-selection">
+      <span class="what-selection">
         ${to}
         <span>${from}</span>
-      </a>
+      </span>
     `);
   el.html(replacement);
 }
-
 
 const difficulties = [
   'easy',
@@ -67,13 +66,37 @@ chrome.storage.local.get(['user'], function({ user }) {
       const trimmedData = suffix === 'word' ? data :
         data.map(i => [ trimmer(i[0]), trimmer(i[1]) ]);
 
-      for (let i of trimmedData) {
-        try {
-          replaceElement(i[0], i[1]);
-        } catch (err) {
-          console.log('err', err);
+      const obj = trimmedData.reduce((acc, cur) => {
+        acc[cur[0]] = cur[1];
+        return acc;
+      }, {});
+
+      $('body :not(script) :not(style)').contents().filter(function() {
+        return this.nodeType === 3;
+      }).replaceWith(function() {
+        const rp = suffix === 'sentence' ? obj[this.nodeValue] :
+          (() => {
+            const f = trimmedData.find(i => this.nodeValue.indexOf(i[0]) > -1);
+            return f ? f[1] : false;
+          })()
+        
+        if (rp) {
+
+          const html = `
+            <span class="what-selection">
+              ${rp}
+              <span>${this.nodeValue}</span>
+            </span>
+          `;
+          const rep = suffix === 'sentence' ? this.nodeValue :
+            trimmedData.find(i => i[1] === rp)[0];
+          const re = new RegExp(rep);
+
+          return this.nodeValue.replace(re, html);
+        } else {
+          return this.nodeValue;
         }
-      }
+      })
 
       // handle translated text hover 
       var el = document.getElementsByClassName("what-selection");
@@ -115,7 +138,6 @@ const showPopover = (event) => {
 const hidePopover = () => $('#' + div.id)
   .css('display', 'none')
   .text('');
-
 
 // Handle hover
 function handleHover(event) {
