@@ -30,7 +30,7 @@
     "@types/chrome": "0.0.92",
     "@types/node": "^13.5.0",
     "awesome-typescript-loader": "^5.2.1",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "cpy-cli": "^3.0.0",
     "cra-build-watch": "^3.0.0",
     "css-loader": "^3.4.2",
